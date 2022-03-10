@@ -1,0 +1,55 @@
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+} from 'recharts';
+
+import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
+
+import { sumByField } from './helpers';
+
+const GraficaEdad = ({ data }) => {
+  const chartInfo = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return sumByField({
+      field: 'edad',
+      list: data,
+    });
+  }, [data]);
+
+  return (
+    <>
+      <div>
+        <h4>Edad</h4>
+        <ResponsiveContainer width="100%" height="100%">
+          <div>
+            <LineChart
+              data={chartInfo}
+              width={400}
+              height={300}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="total" stroke="#8884d8" activeDot={{ r: 8 }} />
+            </LineChart>
+          </div>
+        </ResponsiveContainer>
+      </div>
+    </>
+  );
+};
+
+GraficaEdad.defaultProps = {
+  data: null,
+};
+
+GraficaEdad.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object),
+};
+
+export default GraficaEdad;
